@@ -14,6 +14,7 @@ public class Tile {
     int width;
     int height;
     int y;
+    
     public Tile(int x, int y, int width, int height, int characters, boolean mountain, boolean edgePiece, boolean waterPiece){
         this.x = x;
         this.y = y;
