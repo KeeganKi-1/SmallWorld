@@ -14,8 +14,11 @@ public class Tile {
     int width;
     int height;
     int y;
-    
-    public Tile(int x, int y, int width, int height, int characters, boolean mountain, boolean edgePiece, boolean waterPiece){
+    boolean farmland = false;
+    boolean forest = false;
+    String race = "";
+    String ability ="";
+    public Tile(int x, int y, int width, int height, int characters, boolean mountain, boolean edgePiece, boolean waterPiece, boolean farmland, boolean forest){
         this.x = x;
         this.y = y;
         this.width = width;
@@ -25,12 +28,57 @@ public class Tile {
         this.mountain = mountain;
         this.edgePiece = edgePiece;
         this.waterPiece =waterPiece;
+        this.farmland  = farmland;
+        this.forest  = forest;
     }
     public void addNode(Tile node){
          connectingTiles.add(node);
     }
-    public int amountToCaptue(){
-        return 2;
+    public void setRace(String race){
+        this.race =race;
+       
+    }
+    public int amountToCaptue(String race, String ability){
+        
+        int amount = 2+charactersConquering;
+        if(mountain){
+            
+        amount++;
+        }
+        if(ability.equals("commando")){ 
+        amount--;
+        }
+        if(race!=null){
+        if(race.equals("tritons")){
+            for(int i = 0; i<connectingTiles.size(); i++ ){
+                if(connectingTiles.get(i).waterPiece){
+                    amount--;
+                    break;
+                }
+            }
+            if(amount < 1){
+                amount =1;
+            }
+        }
+    }
+        return amount;
+    }
+    public int collectMoney(String ability, String race){
+        int money = 1;
+
+        if(race.equals("humans") && farmland){
+money++;
+        }
+        if(ability.equals("forest") && forest){
+            money++;
+        }
+        return money;
+    }
+    public void removeCharacters(int amount){
+        charactersConquering-=amount;
+        if(charactersConquering <= 0){
+            owningPlayer = -1;
+        }
     }
     
 
