@@ -16,7 +16,7 @@ public class Tile {
     int y;
     boolean farmland = false;
     boolean forest = false;
-    String race = "";
+    String race = "lostTribe";
     String ability ="";
     public Tile(int x, int y, int width, int height, int characters, boolean mountain, boolean edgePiece, boolean waterPiece, boolean farmland, boolean forest){
         this.x = x;
@@ -38,7 +38,7 @@ public class Tile {
         this.race =race;
        
     }
-    public int amountToCaptue(String race, String ability){
+    public int amountToCaptue(String race, String ability, int reinforcements){
         
         int amount = 2+charactersConquering;
         if(mountain){
@@ -56,11 +56,14 @@ public class Tile {
                     break;
                 }
             }
+            
+        }
+
+    }
+    amount-=reinforcements;
             if(amount < 1){
                 amount =1;
             }
-        }
-    }
         return amount;
     }
     public int collectMoney(String ability, String race){

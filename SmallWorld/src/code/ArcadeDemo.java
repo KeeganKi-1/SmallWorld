@@ -36,7 +36,7 @@ public class ArcadeDemo extends AnimationPanel {
     String race1;
     String ability1;
     int charactersAvailable1 = 0;
-    int money1 = 05;
+    int money1 = 5;
     String race2;
     String ability2;
     int charactersAvailable2 = 0;
@@ -44,6 +44,8 @@ public class ArcadeDemo extends AnimationPanel {
     ArrayList<Tile> borders2 = new ArrayList<Tile>();
     ArrayList<Tile> tilesOwned2 = new ArrayList<Tile>();
     HashMap<String, Integer> characterAmounts = new HashMap<String, Integer>();
+    boolean declined1 = false;
+    boolean declined2 = false;
 
     // Constructor
     // -------------------------------------------------------
@@ -52,21 +54,21 @@ public class ArcadeDemo extends AnimationPanel {
         Tile water1 = new Tile(0, 0, 180, 100, 0, false, true, true, false, false);
         Tile field1 = new Tile(218, 0, 120, 176, 0, false, true, false, true, false);
         Tile forest1 = new Tile(357, 0, 126, 106, 0, false, true, false, false, true);
-        Tile swamp1 = new Tile(511, 0, 136, 80, 0, false, true, false, false, false);
+        Tile swamp1 = new Tile(511, 0, 136, 80, 1, false, true, false, false, false);
         Tile grass1 = new Tile(696, 0, 104, 69, 0, false, true, false, false, false);
-        Tile grass2 = new Tile(252, 195, 140, 79, 0, false, false, false, false, false);
+        Tile grass2 = new Tile(252, 195, 140, 79, 1, false, false, false, false, false);
         Tile mountain1 = new Tile(0, 122, 180, 134, 0, true, true, false, false, false);
         Tile mountain2 = new Tile(515, 114, 149, 100, 0, true, false, false, false, false);
         Tile water2 = new Tile(433, 189, 84, 111, 0, false, false, true, false, false);
-        Tile forest2 = new Tile(729, 117, 70, 70, 0, false, true, false, false, true);
-        Tile field2 = new Tile(656, 61, 30, 110, 0, false, false, false, true, false);
-        Tile field3 = new Tile(0, 251, 228, 100, 0, false, true, false, true, false);
-        Tile forest3 = new Tile(272, 295, 220, 110, 0, false, false, false, false, true);
-        Tile grass3 = new Tile(658, 190, 60, 140, 0, false, false, false, false, false);
+        Tile forest2 = new Tile(729, 117, 70, 70, 1, false, true, false, false, true);
+        Tile field2 = new Tile(656, 61, 30, 110, 1, false, false, false, true, false);
+        Tile field3 = new Tile(0, 251, 228, 100, 1, false, true, false, true, false);
+        Tile forest3 = new Tile(272, 295, 220, 110, 1, false, false, false, false, true);
+        Tile grass3 = new Tile(658, 190, 60, 140, 1, false, false, false, false, false);
         Tile mountain3 = new Tile(755, 201, 45, 163, 0, true, true, false, false, false);
-        Tile swamp2 = new Tile(0, 357, 205, 141, 0, false, true, false, false, false);
+        Tile swamp2 = new Tile(0, 357, 205, 141, 1, false, true, false, false, false);
         Tile grass4 = new Tile(240, 380, 160, 116, 0, false, true, false, false, false);
-        Tile swamp3 = new Tile(420, 420, 100, 80, 0, false, true, false, false, false);
+        Tile swamp3 = new Tile(420, 420, 100, 80, 1, false, true, false, false, false);
         Tile mountain4 = new Tile(539, 411, 130, 89, 0, true, true, false, false, false);
         Tile swamp4 = new Tile(671, 357, 46, 143, 0, false, true, false, false, false);
         Tile forest4 = new Tile(726, 316, 32, 84, 0, false, true, false, false, true);
@@ -257,6 +259,7 @@ public class ArcadeDemo extends AnimationPanel {
 
     public void makeImages() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
+        images.put("money", toolkit.getImage("src/images/money.png").getScaledInstance(25, 25, 0));
         images.put("ratmanPiece", toolkit.getImage("src/images/RatManPiece.png").getScaledInstance(50, 50, 0));
         images.put("humansPiece", toolkit.getImage("src/images/HumanPiece.png").getScaledInstance(50, 50, 0));
         images.put("tritonsPiece", toolkit.getImage("src/images/TritonPiece.png").getScaledInstance(50, 50, 0));
@@ -269,7 +272,7 @@ public class ArcadeDemo extends AnimationPanel {
         images.put("forest", toolkit.getImage("src/images/ForestAbilities.png").getScaledInstance(200, 50, 0));
         images.put("wealthy", toolkit.getImage("src/images/WealthyAbility.png").getScaledInstance(200, 50, 0));
         images.put("commando", toolkit.getImage("src/images/CommandoSelector.png").getScaledInstance(200, 50, 0));
-
+        images.put("lostTribePiece",toolkit.getImage("src/images/LostTribePiece.png").getScaledInstance(50, 50, 0));
     }
 
     public ArcadeDemo() { // Enter the name and width and height.
@@ -347,6 +350,7 @@ public class ArcadeDemo extends AnimationPanel {
     protected void renderFrame(Graphics g) {
 
         frameNumber++;
+        if(turn<11){
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, 1200, 900);
         g.setColor(new Color(0, 196, 52));
@@ -367,6 +371,8 @@ public class ArcadeDemo extends AnimationPanel {
         for (int i = 0; i < races.size(); i++) {
             g.drawImage(images.get(races.get(i) + "Selector"), 800, i * 50, this);
             g.drawImage(images.get(abilities.get(i)), 1000, i * 50, this);
+            for(int j=0; j<moneyInSlots.get(i);j++)
+            g.drawImage(images.get("money"),1175+3*j , i*50, this);
         }
 
         for (int i = 0; i < charactersAvailable1; i++) {
@@ -375,6 +381,7 @@ public class ArcadeDemo extends AnimationPanel {
         for (int i = 0; i < charactersAvailable2; i++) {
             g.drawImage(images.get(race2 + "Piece"), 1100 - (i * 8), 450, this);
         }
+       
         g.drawString(mouseX + "," + mouseY, 100, 100);
         for (int i = 0; i < bord.size(); i++) {
             for (int j = 0; j < bord.get(i).charactersConquering; j++) {
@@ -383,7 +390,14 @@ public class ArcadeDemo extends AnimationPanel {
                         bord.get(i).y + (bord.get(i).height / 3), this);
             }
         }
-
+    }
+    else{
+        if(money1>money2){
+            g.drawString("player 1 won", 300, 300);
+        }else{
+            g.drawString("player 2 won", 300, 300);
+        }
+    }
     }// --end of renderFrame method--
 
     // -------------------------------------------------------
@@ -422,17 +436,18 @@ public class ArcadeDemo extends AnimationPanel {
         }
 
         if (phase == 2) {
-            if (new HitBox(1000, 450, 100, 50).intersects(mouseX, mouseY) && !clicked1) {
+            if (new HitBox(1000, 450, 100, 50).intersects(mouseX, mouseY) && !clicked1 && !declined1) {
                tilesOwned1.clear();
                 charactersAvailable1 = 0;
                 race1 = null;
                 phase = 4;
+                declined1 = true;
             }
             if (tilesOwned1.size() == 0) {
 
                 for (int i = 0; i < bord.size(); i++) {
                     if ((bord.get(i).edgePiece || ability1.equals("flying"))
-                            && charactersAvailable1 >= bord.get(i).amountToCaptue(race1, ability1)
+                            && charactersAvailable1 >= bord.get(i).amountToCaptue(race1, ability1,reinforcements)
                             && bord.get(i).hitBox.intersects(mouseX, mouseY) && !bord.get(i).waterPiece
                             && bord.get(i).owningPlayer != turn % 2) {
                         if (bord.get(i).charactersConquering > 0) {
@@ -446,8 +461,8 @@ public class ArcadeDemo extends AnimationPanel {
                         bord.get(i).setRace(race1);
                         bord.get(i).ability = ability1;
                         bord.get(i).owningPlayer = turn % 2;
-                        charactersAvailable1 -= bord.get(i).amountToCaptue(race1, ability1);
-                        bord.get(i).charactersConquering = bord.get(i).amountToCaptue(race1, ability1);
+                        charactersAvailable1 -= bord.get(i).amountToCaptue(race1, ability1,reinforcements);
+                        bord.get(i).charactersConquering = bord.get(i).amountToCaptue(race1, ability1,reinforcements);
                         tilesOwned1.add(bord.get(i));
                         updateBorders();
                         clicked1 = true;
@@ -458,7 +473,7 @@ public class ArcadeDemo extends AnimationPanel {
                     for (int i = 0; i < bord.size(); i++) {
 
                         if ((bord.get(i).edgePiece || ability1.equals("flying"))
-                                && charactersAvailable1 >= bord.get(i).amountToCaptue(race1, ability1)
+                                && charactersAvailable1 >= bord.get(i).amountToCaptue(race1, ability1,reinforcements)
                                 && bord.get(i).hitBox.intersects(mouseX, mouseY) && !bord.get(i).waterPiece
                                 && bord.get(i).owningPlayer != turn % 2) {
                             if (bord.get(i).charactersConquering > 0) {
@@ -472,8 +487,8 @@ public class ArcadeDemo extends AnimationPanel {
                             bord.get(i).setRace(race1);
                             bord.get(i).ability = ability1;
                             bord.get(i).owningPlayer = turn % 2;
-                            charactersAvailable1 -= bord.get(i).amountToCaptue(race1, ability1);
-                            bord.get(i).charactersConquering = bord.get(i).amountToCaptue(race1, ability1);
+                            charactersAvailable1 -= bord.get(i).amountToCaptue(race1, ability1,reinforcements);
+                            bord.get(i).charactersConquering = bord.get(i).amountToCaptue(race1, ability1,reinforcements);
                             tilesOwned1.add(bord.get(i));
                             updateBorders();
                             clicked1 = true;
@@ -482,7 +497,7 @@ public class ArcadeDemo extends AnimationPanel {
                     }
                 } else {
                     for (int i = 0; i < borders1.size(); i++) {
-                        if (charactersAvailable1 >= borders1.get(i).amountToCaptue(race1, ability1)
+                        if (charactersAvailable1 >= borders1.get(i).amountToCaptue(race1, ability1,reinforcements)
                                 && borders1.get(i).hitBox.intersects(mouseX, mouseY) && !borders1.get(i).waterPiece
                                 && borders1.get(i).owningPlayer != turn % 2) {
                             if (borders1.get(i).charactersConquering > 0) {
@@ -497,8 +512,8 @@ public class ArcadeDemo extends AnimationPanel {
                             borders1.get(i).ability = ability1;
 
                             borders1.get(i).owningPlayer = turn % 2;
-                            charactersAvailable1 -= borders1.get(i).amountToCaptue(race1, ability1);
-                            borders1.get(i).charactersConquering = borders1.get(i).amountToCaptue(race1, ability1);
+                            charactersAvailable1 -= borders1.get(i).amountToCaptue(race1, ability1,reinforcements);
+                            borders1.get(i).charactersConquering = borders1.get(i).amountToCaptue(race1, ability1,reinforcements);
                             tilesOwned1.add(borders1.get(i));
                             updateBorders();
                             clicked1 = true;
@@ -563,17 +578,18 @@ public class ArcadeDemo extends AnimationPanel {
 
         }
         if (phase == 2) {
-            if (new HitBox(1000, 450, 100, 50).intersects(mouseX, mouseY) && !clicked2) {
+            if (new HitBox(1000, 450, 100, 50).intersects(mouseX, mouseY) && !clicked2 && !declined2) {
                 charactersAvailable2 = 0;
                 race2 = null;
                 phase = 4;
                 tilesOwned2.clear();
+                declined2 = true;
             }
             if (tilesOwned2.size() == 0) {
 
                 for (int i = 0; i < bord.size(); i++) {
                     if ((bord.get(i).edgePiece || ability2.equals("flying"))
-                            && charactersAvailable2 >= bord.get(i).amountToCaptue(race2, ability2)
+                            && charactersAvailable2 >= bord.get(i).amountToCaptue(race2, ability2,reinforcements)
                             && bord.get(i).hitBox.intersects(mouseX, mouseY) && !bord.get(i).waterPiece
                             && bord.get(i).owningPlayer != turn % 2) {
                         if (bord.get(i).charactersConquering > 0) {
@@ -587,8 +603,8 @@ public class ArcadeDemo extends AnimationPanel {
                         bord.get(i).setRace(race2);
                         bord.get(i).ability = ability2;
                         bord.get(i).owningPlayer = turn % 2;
-                        charactersAvailable2 -= bord.get(i).amountToCaptue(race2, ability2);
-                        bord.get(i).charactersConquering = bord.get(i).amountToCaptue(race2, ability2);
+                        charactersAvailable2 -= bord.get(i).amountToCaptue(race2, ability2,reinforcements);
+                        bord.get(i).charactersConquering = bord.get(i).amountToCaptue(race2, ability2,reinforcements);
                         tilesOwned2.add(bord.get(i));
                         updateBorders();
                         clicked2 = true;
@@ -599,7 +615,7 @@ public class ArcadeDemo extends AnimationPanel {
                     for (int i = 0; i < bord.size(); i++) {
 
                         if ((bord.get(i).edgePiece || ability2.equals("flying"))
-                                && charactersAvailable2 >= bord.get(i).amountToCaptue(race2, ability2)
+                                && charactersAvailable2 >= bord.get(i).amountToCaptue(race2, ability2,reinforcements)
                                 && bord.get(i).hitBox.intersects(mouseX, mouseY) && !bord.get(i).waterPiece
                                 && bord.get(i).owningPlayer != turn % 2) {
                             if (bord.get(i).charactersConquering > 0) {
@@ -613,8 +629,8 @@ public class ArcadeDemo extends AnimationPanel {
                             bord.get(i).setRace(race2);
                             bord.get(i).ability = ability2;
                             bord.get(i).owningPlayer = turn % 2;
-                            charactersAvailable2 -= bord.get(i).amountToCaptue(race2, ability2);
-                            bord.get(i).charactersConquering = bord.get(i).amountToCaptue(race2, ability2);
+                            charactersAvailable2 -= bord.get(i).amountToCaptue(race2, ability2,reinforcements);
+                            bord.get(i).charactersConquering = bord.get(i).amountToCaptue(race2, ability2,reinforcements);
                             tilesOwned2.add(bord.get(i));
                             updateBorders();
                             clicked2 = true;
@@ -623,7 +639,7 @@ public class ArcadeDemo extends AnimationPanel {
                     }
                 } else {
                     for (int i = 0; i < borders2.size(); i++) {
-                        if (charactersAvailable2 >= borders2.get(i).amountToCaptue(race2, ability2)
+                        if (charactersAvailable2 >= borders2.get(i).amountToCaptue(race2, ability2,reinforcements)
                                 && borders2.get(i).hitBox.intersects(mouseX, mouseY) && !borders2.get(i).waterPiece
                                 && borders2.get(i).owningPlayer != turn % 2) {
                             if (borders2.get(i).charactersConquering > 0) {
@@ -637,8 +653,8 @@ public class ArcadeDemo extends AnimationPanel {
                             borders2.get(i).setRace(race2);
                             borders2.get(i).ability = ability2;
                             borders2.get(i).owningPlayer = turn % 2;
-                            charactersAvailable2 -= borders2.get(i).amountToCaptue(race2, ability2);
-                            borders2.get(i).charactersConquering = borders2.get(i).amountToCaptue(race2, ability2);
+                            charactersAvailable2 -= borders2.get(i).amountToCaptue(race2, ability2,reinforcements);
+                            borders2.get(i).charactersConquering = borders2.get(i).amountToCaptue(race2, ability2,reinforcements);
                             tilesOwned2.add(borders2.get(i));
                             updateBorders();
                             clicked2 = true;
@@ -680,6 +696,7 @@ public class ArcadeDemo extends AnimationPanel {
         } else {
             player2Click(e);
         }
+        reinforcements =0;
 
     }
 
@@ -690,11 +707,15 @@ public class ArcadeDemo extends AnimationPanel {
         char c = e.getKeyChar();
 
     }
-
+    int[] dice = {0,0,0,1,2,3};
+    int reinforcements;
     public void keyPressed(KeyEvent e) {
+        reinforcements = dice[(int)(6*Math.random())];
+    
         int v = e.getKeyCode();
-        if (v == KeyEvent.VK_SHIFT) {
-
+        if (v == KeyEvent.VK_R) {
+mouseClicked(null);
+            movePhase();
         }
 
     }
