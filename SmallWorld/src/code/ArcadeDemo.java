@@ -440,6 +440,7 @@ public class ArcadeDemo extends AnimationPanel {
                tilesOwned1.clear();
                 charactersAvailable1 = 0;
                 race1 = null;
+                ability1 = null;
                 phase = 4;
                 declined1 = true;
             }
@@ -581,6 +582,7 @@ public class ArcadeDemo extends AnimationPanel {
             if (new HitBox(1000, 450, 100, 50).intersects(mouseX, mouseY) && !clicked2 && !declined2) {
                 charactersAvailable2 = 0;
                 race2 = null;
+                ability2 = null;
                 phase = 4;
                 tilesOwned2.clear();
                 declined2 = true;
